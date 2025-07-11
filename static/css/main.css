@@ -55,27 +55,53 @@ img.card.selected {
   gap: 0.5rem;
 }
 
-/* 小屏幕自动收缩（≤420px 宽时每行 2 张） */
-@media (max-width: 420px) {
-  .card-grid-4 { grid-template-columns: repeat(2, 1fr); }
+/* ===== 首页专用 ===== */
+.seed-form {
+  width: 100%;
+  max-width: 480px;          /* 在大屏也不会太宽 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
 
-#copy-btn {
-  margin-top: 1rem;
-  padding: 0.9rem 2rem;
-  font-size: 1.05rem;
+.seed-form input[type="text"] {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.5rem;
+  text-align: center;
+  border: 2px solid #999;
+  border-radius: .6rem;
+}
+
+.button-large {
+  width: 100%;
+  padding: 1.2rem 0;
+  font-size: 1.3rem;
   font-weight: 700;
   color: #fff;
-  background: linear-gradient(180deg, #73e9a6 0%, #34c37a 100%);
+  background: linear-gradient(180deg, #ffdc6e 0%, #ff9b1f 100%);
   border: none;
-  border-radius: 1rem;
-  box-shadow: 0 4px 0 #289d60, 0 8px 16px rgba(0,0,0,.25);
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 0 #cc7b17, 0 8px 16px rgba(0,0,0,.25);
   cursor: pointer;
-  transition: transform .12s, box-shadow .12s, opacity .12s;
+  transition: transform .12s, box-shadow .12s;
 }
-#copy-btn:disabled {
-  opacity: .5;
-  cursor: not-allowed;
+.button-large:hover   { transform: translateY(-2px) scale(1.04); }
+.button-large:active  { transform: translateY(1px)  scale(.96); }
+
+/* <=600px: 两按钮垂直堆叠（已默认）；>600px: 横排 */
+@media (min-width: 600px) {
+  .btn-row {
+    display: flex;
+    gap: 1rem;
+  }
+  .button-large { width: 50%; }
 }
-#copy-btn:not(:disabled):hover { transform: translateY(-2px) scale(1.05); }
-#copy-btn:not(:disabled):active{ transform: translateY(1px)  scale(.96); }
+
+/* ===== Game 页版权 ===== */
+.footer-note {
+  margin-top: 2rem;
+  font-size: .8rem;
+  color: #888;
+}

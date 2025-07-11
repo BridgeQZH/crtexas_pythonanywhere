@@ -9,18 +9,17 @@
   <h1>{{ message }}</h1>
 
   <form action="{{ url_for('main.start_game') }}" method="post" class="seed-form">
-    <label>
-      输入 4 位数字种子：
-      <input type="text"
-             name="seed"
-             required
-             pattern="\d{4}"
-             maxlength="4"
-             placeholder="0000-9999">
-    </label>
+    <input type="text"
+           name="seed"
+           required
+           pattern="\d{4}"
+           maxlength="4"
+           placeholder="输入 4 位数字种子 (0000-9999)">
 
-    <button type="submit" name="color" value="blue">我是蓝国王</button>
-    <button type="submit" name="color" value="red">我是红国王</button>
+    <div class="btn-row">
+      <button type="submit" name="color" value="blue" class="button-large">我是蓝国王</button>
+      <button type="submit" name="color" value="red"  class="button-large">我是红国王</button>
+    </div>
   </form>
 </body>
 </html>
