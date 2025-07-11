@@ -1,5 +1,4 @@
-<!-- 在所有内嵌脚本之前引入 -->
-<script src="{{ url_for('static', filename='js/cardmap.js') }}"></script>
+
 
 <!doctype html>
 <html lang="zh-CN">
@@ -9,6 +8,8 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
+  <!-- 在所有内嵌脚本之前引入 -->
+  <script src="{{ url_for('static', filename='js/cardmap.js') }}"></script>
   <h2>公共卡池（点选 8 张卡组）</h2>
   <!-- ⬇︎ 用 data-id 存编号，JS 读取 -->
   <div id="public-grid" class="card-grid-4">
