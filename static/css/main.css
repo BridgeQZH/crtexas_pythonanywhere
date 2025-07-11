@@ -1,0 +1,35 @@
+/* 让 body 居中排版，可删可留 */
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 3rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Button 的壳子：圆角、渐变、阴影、平面弹跳 */
+.game-btn {
+  display: inline-block;
+  padding: 0.9rem 2.2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  background: linear-gradient(180deg, #ffdc6e 0%, #ff9b1f 100%);
+  border-radius: 1rem;
+  box-shadow: 0 4px 0 #cc7b17, 0 8px 16px rgba(0, 0, 0, 0.25);
+  transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
+}
+
+/* 悬停：轻微抬起 + 变大一点 */
+.game-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 0 #cc7b17, 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* 点击：压下去一点，模拟 Q 弹 */
+.game-btn:active {
+  transform: translateY(1px) scale(0.97);
+  box-shadow: 0 2px 0 #cc7b17, 0 6px 12px rgba(0, 0, 0, 0.2);
+}
