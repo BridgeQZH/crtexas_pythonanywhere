@@ -27,11 +27,20 @@ button:active  { transform: translateY(1px)  scale(0.96); }
 
 /* ------- 卡牌图片响应式 ------- */
 img.card {
-  width: 100%;                 /* 宽度跟随网格单元 */
-  aspect-ratio: 5 / 6;         /* 150:180 = 5:6，固定纵横比  */
-  object-fit: contain;         /* 保持比例缩放并完整显示 */
+  width: 100%;          /* 跟随网格单元宽度 */
+  height: auto;
   display: block;
+  cursor: pointer;      /* 让用户知道图片可点选 */
+  border-radius: .4rem;
+  transition: transform .12s, outline .12s;
 }
+
+/* 被选中时高亮 + 微缩放 */
+img.card.selected {
+  outline: 3px solid #38bdf8;  /* 青色高亮，可按需改色 */
+  transform: scale(.95);
+}
+
 
 /* 4×2 网格：公共池 */
 .card-grid-4 {
@@ -50,3 +59,23 @@ img.card {
 @media (max-width: 420px) {
   .card-grid-4 { grid-template-columns: repeat(2, 1fr); }
 }
+
+#copy-btn {
+  margin-top: 1rem;
+  padding: 0.9rem 2rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(180deg, #73e9a6 0%, #34c37a 100%);
+  border: none;
+  border-radius: 1rem;
+  box-shadow: 0 4px 0 #289d60, 0 8px 16px rgba(0,0,0,.25);
+  cursor: pointer;
+  transition: transform .12s, box-shadow .12s, opacity .12s;
+}
+#copy-btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+#copy-btn:not(:disabled):hover { transform: translateY(-2px) scale(1.05); }
+#copy-btn:not(:disabled):active{ transform: translateY(1px)  scale(.96); }

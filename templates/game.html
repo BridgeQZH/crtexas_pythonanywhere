@@ -6,22 +6,81 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
-  <h2>公共卡池（8 张）</h2>
-  <div class="card-grid-4">
+  <h2>公共卡池（点选 8 张卡组）</h2>
+  <!-- ⬇︎ 用 data-id 存编号，JS 读取 -->
+  <div id="public-grid" class="card-grid-4">
     {% for cid in public_pool %}
-      <img class="card" src="{{ url_for('static', filename='cards/' ~ cid ~ '.png') }}"
+      <img class="card"
+           data-id="{{ cid }}"
+           src="{{ url_for('static', filename='cards/' ~ cid ~ '.png') }}"
            alt="card {{ cid }}">
     {% endfor %}
   </div>
 
-  <h2>私人卡池（4 张，仅 {{ '蓝国王' if color=='blue' else '红国王' }} 可见）</h2>
-  <div class="card-grid-2">
+  <h2>私人卡池（再点 4 张补齐卡组）</h2>
+  <div id="private-grid" class="card-grid-2">
     {% for cid in private_pool %}
-      <img class="card" src="{{ url_for('static', filename='cards/' ~ cid ~ '.png') }}"
+      <img class="card"
+           data-id="{{ cid }}"
+           src="{{ url_for('static', filename='cards/' ~ cid ~ '.png') }}"
            alt="card {{ cid }}">
     {% endfor %}
   </div>
+
+  <!-- 塔楼单选： -->
+  <h3>选择塔楼部队</h3>
+  <form id="tower-form">
+    <label><input type="radio" name="tower" value="159000002"> 刀塔</label>
+    <label><input type="radio" name="tower" value="159000004"> 厨师塔</label>
+    <label><input type="radio" name="tower" value="159000001"> 炮塔</label>
+    <label><input type="radio" name="tower" value="159000000" checked> 公主塔</label>
+  </form>
+
+  <!-- 复制按钮 -->
+  <button id="copy-btn" disabled>复制该卡组</button>
 
   <p><a href="{{ url_for('main.index') }}">← 重新开始</a></p>
+
+  <!-- ====== 内嵌脚本 ====== -->
+  <script>
+    const MAX_DECK = 8;
+    const selected = new Set();         // 保存已选编号
+    const cards = document.querySelectorAll('.card');
+    const btn   = document.getElementById('copy-btn');
+    const towerForm = document.getElementById('tower-form');
+
+    // 点击卡牌 → 选 / 取消
+    cards.forEach(img => img.addEventListener('click', () => {
+      const id = img.dataset.id;
+
+      // 若已选，取消
+      if (selected.has(id)) {
+        selected.delete(id);
+        img.classList.remove('selected');
+      } else {
+        // 未选且未满 8 张
+        if (selected.size < MAX_DECK) {
+          selected.add(id);
+          img.classList.add('selected');
+        }
+      }
+      btn.disabled = !(selected.size === MAX_DECK);   // 选够 8 张才可点击
+    }));
+
+    // 点击按钮 → 生成 URL 并打开新标签
+    btn.addEventListener('click', () => {
+      if (selected.size !== MAX_DECK) return;
+
+      // 1) 卡牌密钥：暂用编号占位；未来可写映射函数 encode(id)
+      const deckParam = [...selected].join(';');
+
+      // 2) 塔楼
+      const tt = towerForm.tower.value;
+
+      // 3) 拼链接并跳转
+      const url = `https://link.clashroyale.com/en?clashroyale://copyDeck?deck=${deckParam}&tt=${tt}&l=Royals`;
+      window.open(url, '_blank', 'noopener');
+    });
+  </script>
 </body>
 </html>
