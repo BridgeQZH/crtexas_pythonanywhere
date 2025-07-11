@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{{ config.SITE_TITLE or "My Flask Site" }}</title>
+
+    <!-- 演示：引用静态 CSS 文件 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  </head>
+  <body>
+    <h1>{{ message }}</h1>
+    <p>Rendered with Jinja2 template 🎉</p>
+  </body>
+</html>
