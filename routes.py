@@ -8,7 +8,7 @@ CARD_POOL = list(range(120))          # 0‒119 共 120 张
 # ---------- 首页 ----------
 @bp.route("/")
 def index():
-    return render_template("index.html", message="Hello from Flask! Zihan at Malmö 🇸🇪")
+    return render_template("index.html", message="德州皇室玩法，灵感来源Xiake - Youtube")
 
 # ---------- 处理表单 ----------
 @bp.route("/start", methods=["POST"])

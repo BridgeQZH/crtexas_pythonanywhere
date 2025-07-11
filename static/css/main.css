@@ -26,7 +26,12 @@ button:hover   { transform: translateY(-2px) scale(1.05); }
 button:active  { transform: translateY(1px)  scale(0.96); }
 
 /* ------- 卡牌图片响应式 ------- */
-img.card { width: 100%; height: auto; display: block; }
+img.card {
+  width: 100%;                 /* 宽度跟随网格单元 */
+  aspect-ratio: 5 / 6;         /* 150:180 = 5:6，固定纵横比  */
+  object-fit: contain;         /* 保持比例缩放并完整显示 */
+  display: block;
+}
 
 /* 4×2 网格：公共池 */
 .card-grid-4 {
