@@ -1,5 +1,10 @@
-<!-- templates/index.html -->
-...
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <title>{{ config.SITE_TITLE or "My Flask Site" }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
 <body>
   <h1>{{ message }}</h1>
 
@@ -14,7 +19,6 @@
              placeholder="0000-9999">
     </label>
 
-    <!-- 两个提交按钮用 name="color" 区分身份 -->
     <button type="submit" name="color" value="blue">我是蓝国王</button>
     <button type="submit" name="color" value="red">我是红国王</button>
   </form>

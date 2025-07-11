@@ -3,21 +3,24 @@
 <head>
   <meta charset="utf-8" />
   <title>{{ '蓝国王' if color=='blue' else '红国王' }}的卡池</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
-  <h2>公共卡池（8 张，对双方一致）</h2>
-  <ul>
-    {% for card in public_pool %}
-      <li>{{ card }}</li>
+  <h2>公共卡池（8 张）</h2>
+  <div class="card-grid-4">
+    {% for cid in public_pool %}
+      <img class="card" src="{{ url_for('static', filename='cards/' ~ cid ~ '.png') }}"
+           alt="card {{ cid }}">
     {% endfor %}
-  </ul>
+  </div>
 
   <h2>私人卡池（4 张，仅 {{ '蓝国王' if color=='blue' else '红国王' }} 可见）</h2>
-  <ul>
-    {% for card in private_pool %}
-      <li>{{ card }}</li>
+  <div class="card-grid-2">
+    {% for cid in private_pool %}
+      <img class="card" src="{{ url_for('static', filename='cards/' ~ cid ~ '.png') }}"
+           alt="card {{ cid }}">
     {% endfor %}
-  </ul>
+  </div>
 
   <p><a href="{{ url_for('main.index') }}">← 重新开始</a></p>
 </body>
