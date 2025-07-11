@@ -1,10 +1,22 @@
-<!-- 按钮区域 -->
-<div class="btn-wrapper">
-  <!-- 用 <a> 包起按钮，target="_blank" 新窗口打开外链 -->
-  <a href="https://link.clashroyale.com/en?clashroyale://copyDeck?deck=26000060;26000004;26000096;26000042;28000024;26000013;28000001;28000002&tt=159000004&l=Royals"
-     class="game-btn"
-     target="_blank"
-     rel="noopener">
-    复制卡组
-  </a>
-</div>
+<!-- templates/index.html -->
+...
+<body>
+  <h1>{{ message }}</h1>
+
+  <form action="{{ url_for('main.start_game') }}" method="post" class="seed-form">
+    <label>
+      输入 4 位数字种子：
+      <input type="text"
+             name="seed"
+             required
+             pattern="\d{4}"
+             maxlength="4"
+             placeholder="0000-9999">
+    </label>
+
+    <!-- 两个提交按钮用 name="color" 区分身份 -->
+    <button type="submit" name="color" value="blue">我是蓝国王</button>
+    <button type="submit" name="color" value="red">我是红国王</button>
+  </form>
+</body>
+</html>
