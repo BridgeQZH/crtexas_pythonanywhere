@@ -1,7 +1,56 @@
 import random
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import (Blueprint, render_template, request, redirect, url_for,
+                   flash, session, g)
 
 bp = Blueprint("main", __name__)
+
+# ---------- 0.  翻译字典 ----------
+_trans = {
+    "zh": {
+        "seed_ph":  "输入 4 位数字种子 (0000-9999)",
+        "blue_btn": "我是蓝国王",
+        "red_btn":  "我是红国王",
+        "public":   "公共卡池（8 张）",
+        "priv_b":   "私人卡池（4 张，仅 蓝国王 可见）",
+        "priv_r":   "私人卡池（4 张，仅 红国王 可见）",
+        "tower":    "选择塔楼部队",
+        "copy":     "复制该卡组",
+        "restart":  "重新开始"
+    },
+    "en": {
+        "seed_ph":  "Enter 4‑digit seed (0000‑9999)",
+        "blue_btn": "I am Blue King",
+        "red_btn":  "I am Red King",
+        "public":   "Public pool (8 cards)",
+        "priv_b":   "Private pool (4 cards, Blue only)",
+        "priv_r":   "Private pool (4 cards, Red only)",
+        "tower":    "Choose Tower",
+        "copy":     "Copy Deck",
+        "restart":  "Restart"
+    }
+}
+
+# ---------- 1.  在每个请求前确定语言 ----------
+@bp.before_app_request
+def detect_lang():
+    g.lang = session.get("lang", "zh")            # 默认为中文
+
+
+# ---------- 2.  提供简易翻译函数给模板 ----------
+@bp.app_context_processor
+def inject_t():
+    def t(key):                                   # 用法：{{ t('public') }}
+        return _trans.get(g.lang, _trans["zh"]).get(key, key)
+    return dict(t=t, lang=g.lang)
+
+
+# ---------- 3.  切换语言的路由 ----------
+@bp.route("/lang/<lang_code>")
+def set_lang(lang_code):
+    if lang_code in _trans:
+        session["lang"] = lang_code
+    return redirect(request.referrer or url_for("main.index"))
+
 
 CARD_POOL = list(range(120))          # 0‒119 共 120 张
 SPECIAL_SET = {0, 15, 71, 100, 50, 51, 66, 77}

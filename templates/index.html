@@ -6,20 +6,27 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
-  <h1>{{ message }}</h1>
+  <!-- —— 右上角语言按钮 —— -->
+  <div style="position:absolute;top:1rem;right:1rem;">
+    <a href="{{ url_for('main.set_lang', lang_code='zh') }}"
+       {% if lang=='zh' %}style="font-weight:700;"{% endif %}>中文</a> |
+    <a href="{{ url_for('main.set_lang', lang_code='en') }}"
+       {% if lang=='en' %}style="font-weight:700;"{% endif %}>English</a>
+  </div>
 
   <form action="{{ url_for('main.start_game') }}" method="post" class="seed-form">
-    <input type="text"
-           name="seed"
-           required
-           pattern="\d{4}"
-           maxlength="4"
-           placeholder="输入 4 位数字种子 (0000-9999)">
+    <input type="text" name="seed" required pattern="\d{4}" maxlength="4"
+           placeholder="{{ t('seed_ph') }}">
 
     <div class="btn-row">
-      <button type="submit" name="color" value="blue" class="button-large">我是蓝国王</button>
-      <button type="submit" name="color" value="red"  class="button-large">我是红国王</button>
+      <button type="submit" name="color" value="blue" class="button-large">
+        {{ t('blue_btn') }}
+      </button>
+      <button type="submit" name="color" value="red" class="button-large">
+        {{ t('red_btn') }}
+      </button>
     </div>
   </form>
 </body>
+
 </html>
