@@ -128,3 +128,22 @@ img.card.selected {
   box-shadow: 0 0 0 2px #fff;   /* 白边让数字更清晰 */
 }
 
+/* —— 让 iframe 随屏幕宽度伸缩，保持 16:9 —— */
+.yt-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 640px;      /* 你想限制的视频最大宽度，可调整 */
+  margin-top: 1.5rem;
+}
+.yt-wrapper::before {
+  content: "";
+  display: block;
+  padding-top: 56.25%;   /* 9 / 16 = 0.5625 → 16:9 高度占位 */
+}
+.yt-wrapper iframe {
+  position: absolute;
+  inset: 0;              /* 顶、右、底、左全部贴合 wrapper */
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
