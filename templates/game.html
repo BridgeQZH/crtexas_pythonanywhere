@@ -10,26 +10,28 @@
 <body>
   <!-- 在所有内嵌脚本之前引入 -->
   <script src="{{ url_for('static', filename='js/cardmap.js') }}"></script>
-  <h2>公共卡池（点选 8 张卡组）</h2>
+  <h2>公共卡池</h2>
   <!-- ⬇︎ 用 data-id 存编号，JS 读取 -->
   <div id="public-grid" class="card-grid-4">
-    {% for cid in public_pool %}
+  {% for cid in public_pool %}
+    <div class="card-wrapper" data-id="{{ cid }}">
       <img class="card"
-           data-id="{{ cid }}"
            src="{{ url_for('static', filename='cards/' ~ cid ~ '.png') }}"
            alt="card {{ cid }}">
-    {% endfor %}
-  </div>
+    </div>
+  {% endfor %}
+</div>
 
-  <h2>私人卡池（再点 4 张补齐卡组）</h2>
+  <h2>私人卡池</h2>
   <div id="private-grid" class="card-grid-2">
-    {% for cid in private_pool %}
+  {% for cid in private_pool %}
+    <div class="card-wrapper" data-id="{{ cid }}">
       <img class="card"
-           data-id="{{ cid }}"
            src="{{ url_for('static', filename='cards/' ~ cid ~ '.png') }}"
            alt="card {{ cid }}">
-    {% endfor %}
-  </div>
+    </div>
+  {% endfor %}
+</div>
 
   <!-- 塔楼单选： -->
   <h3>选择塔楼部队</h3>
@@ -49,43 +51,50 @@
   <!-- ====== 内嵌脚本 ====== -->
   <script>
     const MAX_DECK = 8;
-    const selected = new Set();         // 保存已选编号
-    const cards = document.querySelectorAll('.card');
-    const btn   = document.getElementById('copy-btn');
+    let selectedIds = [];                             // 保持选牌顺序
+
+    // 绑定点击
+    document.querySelectorAll('.card-wrapper').forEach(wrap => {
+      wrap.addEventListener('click', () => toggleSelect(wrap));
+    });
+
+    const btn = document.getElementById('copy-btn');
     const towerForm = document.getElementById('tower-form');
 
-    // 点击卡牌 → 选 / 取消
-    cards.forEach(img => img.addEventListener('click', () => {
-      const id = img.dataset.id;
+    function toggleSelect(wrap) {
+      const id = wrap.dataset.id;
+      const idx = selectedIds.indexOf(id);
 
-      // 若已选，取消
-      if (selected.has(id)) {
-        selected.delete(id);
-        img.classList.remove('selected');
-      } else {
-        // 未选且未满 8 张
-        if (selected.size < MAX_DECK) {
-          selected.add(id);
-          img.classList.add('selected');
-        }
+      if (idx !== -1) {            // 已选 → 取消
+        selectedIds.splice(idx, 1);
+        wrap.classList.remove('selected');
+        wrap.removeAttribute('data-num');
+      } else {                     // 未选 → 尝试加入
+        if (selectedIds.length >= MAX_DECK) return;
+        selectedIds.push(id);
+        wrap.classList.add('selected');
+        wrap.setAttribute('data-num', selectedIds.length);
       }
-      btn.disabled = !(selected.size === MAX_DECK);   // 选够 8 张才可点击
-    }));
+      renumberBadges();
+      btn.disabled = selectedIds.length !== MAX_DECK;
+    }
 
-    // 点击按钮 → 生成 URL 并打开新标签
+    // 重新编号徽章
+    function renumberBadges() {
+      selectedIds.forEach((id, i) => {
+        const w = document.querySelector(`.card-wrapper[data-id='${id}']`);
+        if (w) w.setAttribute('data-num', i + 1);
+      });
+    }
+
+    // 点击复制
     btn.addEventListener('click', () => {
-      if (selected.size !== MAX_DECK) return;
-
-      // 1) 卡牌密钥：暂用编号占位；未来可写映射函数 encode(id)
-      const deckParam = [...selected].map(encode).join(';');
-
-      // 2) 塔楼
+      if (selectedIds.length !== MAX_DECK) return;
+      const deckParam = selectedIds.map(encode).join(';');
       const tt = towerForm.tower.value;
-
-      // 3) 拼链接并跳转
       const url = `https://link.clashroyale.com/en?clashroyale://copyDeck?deck=${deckParam}&tt=${tt}&l=Royals`;
       window.open(url, '_blank', 'noopener');
     });
-  </script>
+</script>
 </body>
 </html>
