@@ -10,7 +10,7 @@
 <body>
   <!-- 在所有内嵌脚本之前引入 -->
   <script src="{{ url_for('static', filename='js/cardmap.js') }}"></script>
-  <h2>公共卡池</h2>
+  <h2>{{ t('public') }}</h2>
   <!-- ⬇︎ 用 data-id 存编号，JS 读取 -->
   <div id="public-grid" class="card-grid-4">
   {% for cid in public_pool %}
@@ -22,7 +22,11 @@
   {% endfor %}
 </div>
 
-  <h2>私人卡池</h2>
+  {% if color=='blue' %}
+    <h2>{{ t('priv_b') }}</h2>
+  {% else %}
+    <h2>{{ t('priv_r') }}</h2>
+  {% endif %}
   <div id="private-grid" class="card-grid-2">
   {% for cid in private_pool %}
     <div class="card-wrapper" data-id="{{ cid }}">
@@ -34,18 +38,18 @@
 </div>
 
   <!-- 塔楼单选： -->
-  <h3>选择塔楼部队</h3>
+  <h3>{{ t('tower') }}</h3>
   <form id="tower-form">
-    <label><input type="radio" name="tower" value="159000002"> 刀塔</label>
-    <label><input type="radio" name="tower" value="159000004"> 厨师塔</label>
-    <label><input type="radio" name="tower" value="159000001"> 炮塔</label>
-    <label><input type="radio" name="tower" value="159000000" checked> 公主塔</label>
+    <label><input type="radio" name="tower" value="159000002"> 刀塔 Dagger Duchess</label>
+    <label><input type="radio" name="tower" value="159000004"> 厨师塔 Royal Chef</label>
+    <label><input type="radio" name="tower" value="159000001"> 炮塔 Cannoneer</label>
+    <label><input type="radio" name="tower" value="159000000" checked> 公主塔 Tower Princess</label>
   </form>
 
   <!-- 复制按钮 -->
-  <button id="copy-btn" disabled>复制该卡组</button>
+  <button id="copy-btn" disabled>{{ t('copy') }}</button>
 
-  <p><a href="{{ url_for('main.index') }}">← 重新开始</a></p>
+  <p><a href="{{ url_for('main.index') }}">← {{ t('restart') }}</a></p>
   <footer class="footer-note">© BridgeQZH  bilibili</footer>
 
   <!-- ====== 内嵌脚本 ====== -->
