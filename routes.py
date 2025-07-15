@@ -53,7 +53,6 @@ def set_lang(lang_code):
 
 
 CARD_POOL = list(range(120))          # 0‒119 共 120 张
-SPECIAL_SET = {0, 15, 71, 100, 50, 51, 66, 77}
 
 # ---------- 首页 ----------
 @bp.route("/")
@@ -93,37 +92,10 @@ def game(color):
 
 # ---------- 发牌 ----------
 def deal_cards(seed: int, color: str):
-    """返回 (public_pool, private_pool) 按规则限制特殊牌出现次数。"""
     rng = random.Random(seed)
     cards = CARD_POOL.copy()
     rng.shuffle(cards)
 
-    public_pool, private_pool = [], []
-    pub_specials = 0
-    priv_specials = 0
-    i = 0
-
-    # —— 先凑满公共 8 张 —— #
-    while len(public_pool) < 8 and i < len(cards):
-        c = cards[i]; i += 1
-        if c in SPECIAL_SET:
-            if pub_specials == 0:
-                public_pool.append(c)
-                pub_specials = 1
-            # 若已超额，跳过这张继续扫描
-        else:
-            public_pool.append(c)
-
-    # —— 再凑满私人 4 张 —— #
-    while len(private_pool) < 4 and i < len(cards):
-        c = cards[i]; i += 1
-        if c in SPECIAL_SET:
-            if priv_specials == 0:
-                private_pool.append(c)
-                priv_specials = 1
-        else:
-            private_pool.append(c)
-
-    # 理论上卡库足够大，一定能拿齐 12 张；如保险可加兜底判断
-
+    public_pool = cards[:8]                 # 公共 8 张
+    private_pool = cards[8:12] if color == "blue" else cards[12:16]
     return public_pool, private_pool
