@@ -1,6 +1,8 @@
 import os, json, random
-from flask import (Blueprint, render_template, request, redirect, url_for,
-                   flash, session, g)
+from flask import (
+    Blueprint, render_template, request, redirect, url_for,
+    flash, session, g, current_app
+)
 
 bp = Blueprint("main", __name__)
 
