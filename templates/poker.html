@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <title>Texas Hold'em Table</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <style>
+    .table-wrap {
+      position: relative;
+      width: min(92vw, 800px);
+      margin: 2rem auto;
+      aspect-ratio: 16/9;
+    }
+    .felt { /* 绿色台呢 */
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 50% 40%, #1f7f3f 0%, #126133 60%, #0e4a25 100%);
+      border-radius: 50%;
+      box-shadow: inset 0 0 0 14px #6b3f1f, inset 0 0 0 24px #d4b48a, 0 16px 40px rgba(0,0,0,.35);
+    }
+    .seat {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      min-width: 86px;
+      max-width: 30vw;
+      padding: .4rem .6rem;
+      background: rgba(0,0,0,.6);
+      color: #fff;
+      border-radius: .8rem;
+      text-align: center;
+      font-weight: 700;
+      backdrop-filter: blur(2px);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      border: 2px solid rgba(255,255,255,.25);
+    }
+    .seat.empty { opacity: .55; font-weight: 600; }
+
+    /* 10个座位按圆周定位（顺时针） */
+    .seat.s0 { left: 50%; top: 7%;  }
+    .seat.s1 { left: 75%; top: 13%; }
+    .seat.s2 { left: 90%; top: 30%; }
+    .seat.s3 { left: 93%; top: 50%; }
+    .seat.s4 { left: 90%; top: 70%; }
+    .seat.s5 { left: 75%; top: 87%; }
+    .seat.s6 { left: 50%; top: 93%; }
+    .seat.s7 { left: 25%; top: 87%; }
+    .seat.s8 { left: 10%; top: 70%; }
+    .seat.s9 { left: 7%;  top: 50%; }
+
+    @media (max-width: 420px){
+      .seat{ min-width: 70px; font-size: .85rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="table-wrap">
+    <div class="felt"></div>
+
+    <!-- 10 个座位 -->
+    {% for name in seats %}
+      <div class="seat s{{ loop.index0 }} {{ 'empty' if name=='empty' }}">
+        {{ name }}
+      </div>
+    {% endfor %}
+  </div>
+
+  <footer class="footer-note" style="text-align:center;margin-bottom:1rem;">
+    临时桌面视图 · 切回皇室请关闭开关 SHOW_POKER
+  </footer>
+</body>
+</html>

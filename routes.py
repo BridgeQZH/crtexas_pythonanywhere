@@ -1,4 +1,4 @@
-import random
+import os, json, random
 from flask import (Blueprint, render_template, request, redirect, url_for,
                    flash, session, g)
 
@@ -57,7 +57,11 @@ CARD_POOL = list(range(120))          # 0‒119 共 120 张
 # ---------- 首页 ----------
 @bp.route("/")
 def index():
-    return render_template("index.html", message="德州皇室玩法，灵感来源Xiake - Youtube")
+    # 如果开关打开，显示德扑桌；否则显示原来的皇室首页
+    if current_app.config.get("SHOW_POKER"):
+        seats = load_seats()
+        return render_template("poker.html", seats=seats)
+    return render_template("index.html")
 
 # ---------- 处理表单 ----------
 @bp.route("/start", methods=["POST"])
@@ -99,3 +103,21 @@ def deal_cards(seed: int, color: str):
     public_pool = cards[:8]                 # 公共 8 张
     private_pool = cards[8:12] if color == "blue" else cards[12:16]
     return public_pool, private_pool
+
+def load_seats():
+    """从 data/seating.json 读取10个座位字符串，不足则用 'empty' 补齐。"""
+    data_path = os.path.join(os.path.dirname(__file__), "data", "seating.json")
+    seats = ["empty"] * 10
+    try:
+        with open(data_path, "r", encoding="utf-8") as f:
+            obj = json.load(f)
+        if isinstance(obj, dict) and "seats" in obj:
+            raw = obj["seats"]
+        elif isinstance(obj, list):
+            raw = obj
+        else:
+            raw = []
+        seats = (raw + ["empty"] * 10)[:10]
+    except Exception:
+        pass
+    return seats
