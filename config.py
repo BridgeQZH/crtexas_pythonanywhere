@@ -8,4 +8,4 @@ class Config:
     LANGUAGES = {"zh": "中文", "en": "English"}
 
     # 新增：临时切换德扑桌
-    SHOW_POKER = os.environ.get("SHOW_POKER", "0") == "1"
+    SHOW_POKER = os.environ.get("SHOW_POKER", "0") == "0"
