@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /d/crtexasGitHub/crtexas_pythonanywhere -type d -not -path */.git*)"
+    ]
+  }
+}
