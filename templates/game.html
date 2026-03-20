@@ -55,6 +55,13 @@
   <!-- ====== 内嵌脚本 ====== -->
   <script>
     const MAX_DECK = 8;
+    // 替换成你自己的冠军卡编号（图片编号 0-119）
+    const CHAMPION_IDS = new Set([
+      "xx", // 骷髅国王
+      "yy", // 射手女王
+      "zz", // 金甲骑士
+      "aa"  // 巨人骷髅王等，如有
+    ]);
     let selectedIds = [];                             // 保持选牌顺序
 
     // 绑定点击
