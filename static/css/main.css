@@ -502,6 +502,28 @@ img.card {
 }
 .footer-link:hover { color: var(--gold); }
 
+/* ===== GitHub Badge ===== */
+.github-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .5rem 1rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 2rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: .85rem;
+  font-weight: 600;
+  transition: background .2s, color .2s, border-color .2s;
+  align-self: center;
+}
+.github-badge:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.3);
+  color: var(--text);
+}
+
 /* ===== Responsive tweaks ===== */
 @media (max-width: 380px) {
   .hero-title { font-size: 2rem; }
