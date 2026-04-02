@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(find /d/crtexasGitHub/crtexas_pythonanywhere -type d -not -path */.git*)"
+      "Bash(find /d/crtexasGitHub/crtexas_pythonanywhere -type d -not -path */.git*)",
+      "WebFetch(domain:api.clashroyale.com)",
+      "WebSearch",
+      "WebFetch(domain:www.deckshop.pro)",
+      "WebFetch(domain:royaleapi.github.io)",
+      "WebFetch(domain:statsroyale.com)"
     ]
   }
 }

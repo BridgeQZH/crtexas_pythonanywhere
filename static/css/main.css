@@ -457,6 +457,37 @@ img.card {
   text-align: center;
 }
 
+/* ===== Elixir Stats Row ===== */
+.elixir-stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .75rem;
+}
+.elixir-stat-card {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-sm);
+  padding: .85rem 1rem;
+  text-align: center;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.elixir-stat-label {
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  margin-bottom: .3rem;
+}
+.elixir-stat-value {
+  font-size: 1.7rem;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  transition: color .2s;
+}
+
 /* ===== Footer ===== */
 .footer-note {
   text-align: center;
@@ -464,6 +495,12 @@ img.card {
   color: #555;
   padding-top: .5rem;
 }
+.footer-link {
+  color: #888;
+  text-decoration: none;
+  transition: color .2s;
+}
+.footer-link:hover { color: var(--gold); }
 
 /* ===== Responsive tweaks ===== */
 @media (max-width: 380px) {

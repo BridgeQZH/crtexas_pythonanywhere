@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ config.SITE_TITLE or "CRTexas · 皇室战争卡组生成器" }}</title>
+  <link rel="icon" type="image/jpeg" href="{{ url_for('static', filename='img/favicon.jpg') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
@@ -30,13 +31,13 @@
     <div class="glass-panel">
       <form action="{{ url_for('main.start_game') }}" method="post" class="seed-form">
 
-        <div class="step-label">① {{ t('seed_ph') }}</div>
+        <div class="step-label">{{ t('step_seed') }}</div>
         <input type="text" name="seed" required pattern="\d{4}" maxlength="4"
                inputmode="numeric"
                placeholder="0000"
                class="seed-input">
 
-        <div class="step-label">② 选择你的阵营</div>
+        <div class="step-label">{{ t('step_faction') }}</div>
         <div class="btn-row">
           <button type="submit" name="color" value="blue" class="btn-faction btn-blue">
             🔵 {{ t('blue_btn') }}
@@ -51,18 +52,18 @@
 
     <!-- How-to Panel -->
     <div class="glass-panel">
-      <h3 class="panel-title">如何使用</h3>
+      <h3 class="panel-title">{{ t('how_title') }}</h3>
       <ol class="how-list">
-        <li>输入今日共享的 4 位数字种子</li>
-        <li>选择你的阵营：蓝方或红方</li>
-        <li>从公共卡池和私人卡池中各选若干张，共选 8 张</li>
-        <li>选择塔楼，点击按钮打开皇室战争复制卡组</li>
+        <li>{{ t('how_1') }}</li>
+        <li>{{ t('how_2') }}</li>
+        <li>{{ t('how_3') }}</li>
+        <li>{{ t('how_4') }}</li>
       </ol>
     </div>
 
     <!-- Video Panel -->
     <div class="glass-panel">
-      <h3 class="panel-title">教学视频</h3>
+      <h3 class="panel-title">{{ t('video_title') }}</h3>
       <div class="yt-wrapper">
         <iframe
           src="https://www.youtube.com/embed/L_ZWaW9rVGs"
@@ -75,7 +76,10 @@
       </div>
     </div>
 
-    <footer class="footer-note">© BridgeQZH &nbsp;·&nbsp; bilibili</footer>
+    <footer class="footer-note">
+      © <a href="https://space.bilibili.com/111393619" target="_blank" rel="noopener" class="footer-link">BridgeQZH</a>
+      &nbsp;·&nbsp; bilibili
+    </footer>
 
   </div>
 </body>

@@ -9,26 +9,50 @@ bp = Blueprint("main", __name__)
 # ---------- 0.  翻译字典 ----------
 _trans = {
     "zh": {
-        "seed_ph":  "输入 4 位数字种子 (0000-9999)",
-        "blue_btn": "我是蓝国王",
-        "red_btn":  "我是红国王",
-        "public":   "公共卡池（8 张）",
-        "priv_b":   "私人卡池（4 张，仅 蓝国王 可见）",
-        "priv_r":   "私人卡池（4 张，仅 红国王 可见）",
-        "tower":    "选择塔楼部队",
-        "copy":     "复制该卡组",
-        "restart":  "重新开始"
+        "seed_ph":      "输入 4 位数字种子 (0000-9999)",
+        "blue_btn":     "我是蓝国王",
+        "red_btn":      "我是红国王",
+        "public":       "公共卡池（8 张）",
+        "priv_b":       "私人卡池（4 张，仅 蓝国王 可见）",
+        "priv_r":       "私人卡池（4 张，仅 红国王 可见）",
+        "tower":        "选择塔楼部队",
+        "copy":         "复制该卡组",
+        "restart":      "重新开始",
+        "how_title":    "如何使用",
+        "how_1":        "输入今日共享的 4 位数字种子",
+        "how_2":        "选择你的阵营：蓝方或红方",
+        "how_3":        "从公共卡池和私人卡池中各选若干张，共选 8 张",
+        "how_4":        "选择塔楼，点击按钮在皇室战争中复制卡组",
+        "video_title":  "教学视频",
+        "avg_cost":     "平均圣水",
+        "cycle_4":      "4张循环",
+        "copy_hint":    "选满 8 张后，点击按钮在皇室战争中复制卡组",
+        "selected":     "已选卡牌",
+        "step_seed":    "① 输入今日种子",
+        "step_faction": "② 选择你的阵营",
     },
     "en": {
-        "seed_ph":  "Enter 4‑digit seed (0000‑9999)",
-        "blue_btn": "I am Blue King",
-        "red_btn":  "I am Red King",
-        "public":   "Public pool (8 cards)",
-        "priv_b":   "Private pool (4 cards, Blue only)",
-        "priv_r":   "Private pool (4 cards, Red only)",
-        "tower":    "Choose Tower",
-        "copy":     "Copy Deck",
-        "restart":  "Restart"
+        "seed_ph":      "Enter 4-digit seed (0000-9999)",
+        "blue_btn":     "I am Blue King",
+        "red_btn":      "I am Red King",
+        "public":       "Public Pool (8 cards)",
+        "priv_b":       "Private Pool (4 cards, Blue only)",
+        "priv_r":       "Private Pool (4 cards, Red only)",
+        "tower":        "Choose Tower Troop",
+        "copy":         "Copy Deck",
+        "restart":      "Restart",
+        "how_title":    "How to Play",
+        "how_1":        "Enter the shared 4-digit seed for today's game",
+        "how_2":        "Choose your faction: Blue King or Red King",
+        "how_3":        "Select 8 cards total from the public pool and your private pool",
+        "how_4":        "Pick a tower troop, then tap the button to copy the deck in Clash Royale",
+        "video_title":  "Tutorial Video",
+        "avg_cost":     "Avg Elixir",
+        "cycle_4":      "4-Card Cycle",
+        "copy_hint":    "Select 8 cards, then tap to copy deck in Clash Royale",
+        "selected":     "Selected",
+        "step_seed":    "① Enter today's seed",
+        "step_faction": "② Choose your faction",
     }
 }
 
@@ -54,7 +78,7 @@ def set_lang(lang_code):
     return redirect(request.referrer or url_for("main.index"))
 
 
-CARD_POOL = list(range(120))          # 0‒119 共 120 张
+CARD_POOL = list(range(120))          # 0-119 共 120 张
 
 # ---------- 首页 ----------
 @bp.route("/")
