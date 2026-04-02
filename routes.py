@@ -92,6 +92,7 @@ def game(color):
     return render_template(
         "game.html",
         color=color,
+        seed=seed,
         public_pool=public_pool,
         private_pool=private_pool,
     )

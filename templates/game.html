@@ -1,96 +1,147 @@
-
-
 <!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
-  <title>{{ '蓝国王' if color=='blue' else '红国王' }}的卡池</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ '蓝方国王' if color=='blue' else '红方国王' }} · 卡池</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <script src="{{ url_for('static', filename='js/cardmap.js') }}"></script>
 </head>
 <body>
-  <!-- 在所有内嵌脚本之前引入 -->
-  <script src="{{ url_for('static', filename='js/cardmap.js') }}"></script>
-  <h2>{{ t('public') }}</h2>
-  <!-- ⬇︎ 用 data-id 存编号，JS 读取 -->
-  <div id="public-grid" class="card-grid-4">
-  {% for cid in public_pool %}
-    <div class="card-wrapper" data-id="{{ cid }}">
-      <img class="card"
-           src="{{ url_for('static', filename='cards/' ~ cid ~ '.png') }}"
-           alt="card {{ cid }}">
+
+  <div class="page-wrapper">
+
+    <!-- Header -->
+    <div class="game-header">
+      <a href="{{ url_for('main.index') }}" class="game-header-back" title="返回">←</a>
+      <div class="game-header-info">
+        <div class="game-header-title {{ color }}">
+          {% if color=='blue' %}🔵 {{ t('blue_btn') }}{% else %}🔴 {{ t('red_btn') }}{% endif %}
+        </div>
+        <div class="game-header-seed">种子 · {{ seed }}</div>
+      </div>
+      <!-- Selection progress counter -->
+      <div style="text-align:right;flex-shrink:0;">
+        <div style="font-size:1.1rem;font-weight:800;color:var(--gold);">
+          <span id="sel-count">0</span><span style="color:var(--text-dim);font-weight:400;">/8</span>
+        </div>
+        <div style="font-size:.75rem;color:var(--text-dim);">已选卡牌</div>
+      </div>
     </div>
-  {% endfor %}
-</div>
 
-  {% if color=='blue' %}
-    <h2>{{ t('priv_b') }}</h2>
-  {% else %}
-    <h2>{{ t('priv_r') }}</h2>
-  {% endif %}
-  <div id="private-grid" class="card-grid-2">
-  {% for cid in private_pool %}
-    <div class="card-wrapper" data-id="{{ cid }}">
-      <img class="card"
-           src="{{ url_for('static', filename='cards/' ~ cid ~ '.png') }}"
-           alt="card {{ cid }}">
+    <!-- Progress bar -->
+    <div style="padding:0 .25rem;">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+      </div>
     </div>
-  {% endfor %}
-</div>
 
-  <!-- 塔楼单选： -->
-  <h3>{{ t('tower') }}</h3>
-  <form id="tower-form">
-    <label><input type="radio" name="tower" value="159000002"> 刀塔 Dagger Duchess</label>
-    <label><input type="radio" name="tower" value="159000004"> 厨师塔 Royal Chef</label>
-    <label><input type="radio" name="tower" value="159000001"> 炮塔 Cannoneer</label>
-    <label><input type="radio" name="tower" value="159000000" checked> 公主塔 Tower Princess</label>
-  </form>
+    <!-- Public Pool -->
+    <div class="glass-panel">
+      <h3 class="panel-title">{{ t('public') }}</h3>
+      <div id="public-grid" class="card-grid-4">
+        {% for cid in public_pool %}
+          <div class="card-wrapper" data-id="{{ cid }}">
+            <img class="card"
+                 src="{{ url_for('static', filename='cards/' ~ cid ~ '.png') }}"
+                 alt="card {{ cid }}"
+                 draggable="false">
+          </div>
+        {% endfor %}
+      </div>
+    </div>
 
-  <!-- 复制按钮 -->
-  <button id="copy-btn" disabled>{{ t('copy') }}</button>
+    <!-- Private Pool -->
+    <div class="glass-panel">
+      {% if color=='blue' %}
+        <h3 class="panel-title">{{ t('priv_b') }}</h3>
+      {% else %}
+        <h3 class="panel-title">{{ t('priv_r') }}</h3>
+      {% endif %}
+      <div id="private-grid" class="card-grid-2">
+        {% for cid in private_pool %}
+          <div class="card-wrapper" data-id="{{ cid }}">
+            <img class="card"
+                 src="{{ url_for('static', filename='cards/' ~ cid ~ '.png') }}"
+                 alt="card {{ cid }}"
+                 draggable="false">
+          </div>
+        {% endfor %}
+      </div>
+    </div>
 
-  <p><a href="{{ url_for('main.index') }}">← {{ t('restart') }}</a></p>
-  <footer class="footer-note">© BridgeQZH  bilibili</footer>
+    <!-- Tower Selection -->
+    <div class="glass-panel">
+      <h3 class="panel-title">{{ t('tower') }}</h3>
+      <form id="tower-form">
+        <div class="tower-grid">
+          <label class="tower-label" data-val="159000000">
+            <input type="radio" name="tower" value="159000000" checked>
+            <div class="tower-dot"></div>
+            <span>公主塔</span>
+          </label>
+          <label class="tower-label" data-val="159000001">
+            <input type="radio" name="tower" value="159000001">
+            <div class="tower-dot"></div>
+            <span>炮塔</span>
+          </label>
+          <label class="tower-label" data-val="159000002">
+            <input type="radio" name="tower" value="159000002">
+            <div class="tower-dot"></div>
+            <span>刀塔</span>
+          </label>
+          <label class="tower-label" data-val="159000004">
+            <input type="radio" name="tower" value="159000004">
+            <div class="tower-dot"></div>
+            <span>厨师塔</span>
+          </label>
+        </div>
+      </form>
+    </div>
 
-  <!-- ====== 内嵌脚本 ====== -->
+    <!-- Copy / Link Button -->
+    <div class="copy-btn-wrap">
+      <button id="copy-btn" disabled>{{ t('copy') }}</button>
+      <p class="copy-hint">选满 8 张后，点击按钮在皇室战争中复制卡组</p>
+    </div>
+
+    <footer class="footer-note">© BridgeQZH &nbsp;·&nbsp; bilibili</footer>
+
+  </div>
+
+  <!-- ====== Logic ====== -->
   <script>
     const MAX_DECK = 8;
-    // 替换成你自己的冠军卡编号（图片编号 0-119）
-    const CHAMPION_IDS = new Set([
-      "xx", // 骷髅国王
-      "yy", // 射手女王
-      "zz", // 金甲骑士
-      "aa"  // 巨人骷髅王等，如有
-    ]);
-    let selectedIds = [];                             // 保持选牌顺序
+    let selectedIds = [];
 
-    // 绑定点击
+    const btn        = document.getElementById('copy-btn');
+    const countEl    = document.getElementById('sel-count');
+    const progressEl = document.getElementById('progress-fill');
+    const towerForm  = document.getElementById('tower-form');
+
+    // ---- Card click ----
     document.querySelectorAll('.card-wrapper').forEach(wrap => {
       wrap.addEventListener('click', () => toggleSelect(wrap));
     });
 
-    const btn = document.getElementById('copy-btn');
-    const towerForm = document.getElementById('tower-form');
-
     function toggleSelect(wrap) {
-      const id = wrap.dataset.id;
+      const id  = wrap.dataset.id;
       const idx = selectedIds.indexOf(id);
 
-      if (idx !== -1) {            // 已选 → 取消
+      if (idx !== -1) {
         selectedIds.splice(idx, 1);
         wrap.classList.remove('selected');
         wrap.removeAttribute('data-num');
-      } else {                     // 未选 → 尝试加入
+      } else {
         if (selectedIds.length >= MAX_DECK) return;
         selectedIds.push(id);
         wrap.classList.add('selected');
         wrap.setAttribute('data-num', selectedIds.length);
       }
       renumberBadges();
-      btn.disabled = selectedIds.length !== MAX_DECK;
+      updateUI();
     }
 
-    // 重新编号徽章
     function renumberBadges() {
       selectedIds.forEach((id, i) => {
         const w = document.querySelector(`.card-wrapper[data-id='${id}']`);
@@ -98,14 +149,37 @@
       });
     }
 
-    // 点击复制
+    function updateUI() {
+      const n = selectedIds.length;
+      countEl.textContent    = n;
+      progressEl.style.width = (n / MAX_DECK * 100) + '%';
+      btn.disabled           = n !== MAX_DECK;
+      if (n === MAX_DECK) {
+        btn.textContent = '{{ t("copy") }} →';
+      } else {
+        btn.textContent = '{{ t("copy") }}';
+      }
+    }
+
+    // ---- Tower radio styled ----
+    document.querySelectorAll('.tower-label').forEach(label => {
+      const radio = label.querySelector('input[type="radio"]');
+      if (radio.checked) label.classList.add('checked');
+      label.addEventListener('click', () => {
+        document.querySelectorAll('.tower-label').forEach(l => l.classList.remove('checked'));
+        label.classList.add('checked');
+      });
+    });
+
+    // ---- Open link ----
     btn.addEventListener('click', () => {
       if (selectedIds.length !== MAX_DECK) return;
       const deckParam = selectedIds.map(encode).join(';');
-      const tt = towerForm.tower.value;
+      const tt  = towerForm.tower.value;
       const url = `https://link.clashroyale.com/en?clashroyale://copyDeck?deck=${deckParam}&tt=${tt}&l=Royals`;
       window.open(url, '_blank', 'noopener');
     });
-</script>
+  </script>
+
 </body>
 </html>
