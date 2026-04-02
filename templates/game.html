@@ -121,6 +121,11 @@
     ]);
     let selectedIds = [];                             // 保持选牌顺序
 
+    const btn        = document.getElementById('copy-btn');
+    const countEl    = document.getElementById('sel-count');
+    const progressEl = document.getElementById('progress-fill');
+    const towerForm  = document.getElementById('tower-form');
+
     // ---- Card click ----
     document.querySelectorAll('.card-wrapper').forEach(wrap => {
       wrap.addEventListener('click', () => toggleSelect(wrap));
